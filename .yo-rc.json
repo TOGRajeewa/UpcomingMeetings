@@ -1,0 +1,11 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "isCreatingSolution": true,
+    "version": "1.4.1",
+    "libraryName": "upcoming-meetings",
+    "libraryId": "c4d9e1f2-5a6b-4c3d-9e8f-1a2b3c4d5e6f",
+    "environment": "onprem",
+    "packageManager": "npm",
+    "componentType": "webpart"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "e7f3c2a8-9b1d-4c6e-8f2a-3d5b7c9e1f04",
+  "alias": "MyMeetingsWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart"],
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "group": { "default": "Other" },
+    "title": { "default": "My Meetings" },
+    "description": { "default": "Displays your Exchange calendar meetings for the selected week." },
+    "officeFabricIconFontName": "Calendar",
+    "properties": {
+      "ewsUrl": "",
+      "mailboxUrl": "",
+      "cacheMinutes": 5
+    }
+  }]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "upcoming-meetings-client-side-solution",
+    "id": "c4d9e1f2-5a6b-4c3d-9e8f-1a2b3c4d5e6f",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": false
+  },
+  "paths": {
+    "zippedPackage": "solution/upcoming-meetings.sppkg"
+  }
+}

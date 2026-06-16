@@ -1,0 +1,346 @@
+@import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
+
+/* Palette derived from image.png */
+$indigo: #4f46e5;          // dropdown link / accents
+$indigo-deep: #3a31cc;     // "today" circle
+$navy: #1e1b4b;            // "My Meetings" title
+$ink: #1f2937;             // meeting titles
+$muted: #6b7280;           // meta text + icons
+$label: #9ca3af;           // weekday labels
+$line: #ececf3;            // divider
+$lav-bg: #eceefb;          // View all button background
+$dot: #d4d4de;             // inactive pagination dot
+
+.myMeetings {
+  box-sizing: border-box;
+  padding: 20px 22px 18px;
+  background: #ffffff;
+  border-radius: 10px;
+  color: $ink;
+  font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+/* ---- header ------------------------------------------------------------- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 30px;
+  color: $navy;
+  letter-spacing: -0.2px;
+}
+
+.selectWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.weekSelect {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: $indigo;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 2px 22px 2px 2px;
+  outline: none;
+
+  &:focus {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  /* hide native arrow in IE/Edge legacy */
+  &::-ms-expand {
+    display: none;
+  }
+}
+
+.selectChevron {
+  position: absolute;
+  right: 2px;
+  pointer-events: none;
+  color: $indigo;
+}
+
+/* ---- calendar strip ----------------------------------------------------- */
+.calendarStrip {
+  display: flex;
+  margin-bottom: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid $line;
+}
+
+.dayCell {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.dayLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: $label;
+}
+
+.dayNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  font-weight: 600;
+  color: $ink;
+}
+
+.dayCellToday {
+  .dayNumber {
+    background: $indigo-deep;
+    color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(58, 49, 204, 0.35);
+  }
+}
+
+/* ---- cards (flat list) -------------------------------------------------- */
+.content {
+  min-height: 170px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  padding: 12px 0;
+
+  & + & {
+    border-top: 1px solid transparent; /* spacing only; flat list per design */
+  }
+}
+
+.cardTitle {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 22px;
+  color: $ink;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  color: $muted;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.metaIcon {
+  flex: 0 0 auto;
+  color: $muted;
+}
+
+.metaText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* ---- skeleton (loading) ------------------------------------------------- */
+.cardSkeleton {
+  pointer-events: none;
+}
+
+.skelLine {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f3f2f6 25%, #e9e9f1 37%, #f3f2f6 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  margin-bottom: 10px;
+}
+
+.skelTitle {
+  width: 65%;
+  height: 14px;
+}
+
+.skelShort {
+  width: 42%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* ---- pagination --------------------------------------------------------- */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: $dot;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #b9b9c6;
+  }
+
+  &:focus {
+    outline: 2px solid $indigo;
+    outline-offset: 2px;
+  }
+}
+
+.dotActive {
+  background: $indigo;
+
+  &:hover {
+    background: $indigo;
+  }
+}
+
+/* ---- empty / error ------------------------------------------------------ */
+.empty,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 12px;
+  gap: 12px;
+}
+
+.emptyIllustration {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.emptyText {
+  color: $muted;
+  font-size: 14px;
+  max-width: 300px;
+}
+
+.errorText {
+  color: #a4262c;
+  font-size: 14px;
+  max-width: 300px;
+}
+
+.retry {
+  border: 1px solid $line;
+  background: #faf9fb;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: #f1f1f6;
+  }
+}
+
+/* ---- footer ------------------------------------------------------------- */
+.footer {
+  display: flex;
+  margin-top: 18px;
+}
+
+.viewAll {
+  flex: 1 1 auto;
+  border: none;
+  background: $lav-bg;
+  color: $indigo;
+  border-radius: 12px;
+  padding: 16px 26px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #e2e4f8;
+  }
+
+  &:focus {
+    outline: 2px solid $indigo;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    color: #9ca3af;
+    background: #f1f1f6;
+    cursor: default;
+  }
+}
+
+/* ---- responsive --------------------------------------------------------- */
+@media (max-width: 420px) {
+  .title {
+    font-size: 22px;
+  }
+  .dayLabel {
+    font-size: 13px;
+  }
+  .dayNumber {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+  .cardMeta {
+    gap: 4px 16px;
+  }
+}

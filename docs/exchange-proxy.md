@@ -8,6 +8,78 @@ It is an infrastructure task (IIS + Active Directory). Nothing in the web part
 code changes — you only set the **EWS endpoint URL** property to the proxy path
 at the end.
 
+> **New to this / not an admin?** Read the plain-English walkthrough first:
+> [setup-simple.md](setup-simple.md). It explains the idea, who does what, and
+> the exact requests to hand your server and directory admins. This document is
+> the detailed reference they'll use for the exact settings.
+
+---
+
+## When you don't control the Exchange server
+
+If Exchange is owned by the client (you can't edit its IIS, `web.config`, or
+RBAC), this reverse-proxy design is still the right choice — and in fact the
+**only** one of the two options that is possible. Here's why.
+
+### Enabling CORS on EWS (the other option) is ruled out
+
+CORS response headers (`Access-Control-Allow-Origin`,
+`Access-Control-Allow-Credentials`, plus an anonymous `OPTIONS` preflight
+handler) must be added **on the Exchange server's own IIS / EWS virtual
+directory**. That is exactly the box you don't control, and a browser will not
+accept a credentialed cross-origin response unless *that* server emits the
+headers. No Exchange access → CORS cannot be implemented. Rule it out.
+
+### Why the reverse proxy still works **without touching Exchange**
+
+The proxy runs on **your** SharePoint front-end, and with **classic** Kerberos
+Constrained Delegation nothing on Exchange changes:
+
+- The `/ews` proxy application lives on the SharePoint WFE — infrastructure you
+  already deploy to.
+- Classic KCD is configured on the **proxy's own AD account** (its *Delegation*
+  tab → "allow delegation to `HTTP/mail.contoso.com`"). It *points at* Exchange's
+  SPN but writes nothing to the Exchange account or server.
+- Exchange's `HTTP/mail.contoso.com` SPN and Integrated Windows Auth on EWS
+  already exist by default on-prem. Exchange just receives a normal, already
+  supported authenticated EWS request.
+
+So Exchange needs **no** configuration change.
+
+### The one dependency you can't self-serve
+
+You need a **single Active Directory change**: a domain admin sets constrained
+delegation (and confirms SPNs) on your proxy's service account. That's an **AD
+ask, not an Exchange ask** — much smaller and safer to request. Two things the AD
+admin must know:
+
+- **Use *classic* KCD, not resource-based KCD.** Resource-based KCD is configured
+  *on the Exchange account* (see the "modern alternative" box in Part 4b) — which
+  reintroduces the exact dependency you're avoiding. Use the classic,
+  proxy-side form only.
+- Given ADFS, delegation will likely need **"Use any authentication protocol"**
+  (protocol transition) — a slightly higher-trust setting the AD admin must
+  approve.
+
+### The exact request to hand the client's AD team
+
+> Please grant **classic Kerberos Constrained Delegation** from the service
+> account **`CONTOSO\svc-ewsproxy`** to the SPN **`HTTP/mail.contoso.com`**, with
+> **protocol transition ("use any authentication protocol") enabled**. No changes
+> to Exchange or its account are required. Also confirm the SPN
+> `HTTP/intranet.contoso.com` is registered to `CONTOSO\svc-ewsproxy` and that no
+> duplicate SPNs exist (`setspn -X`).
+
+### If you control neither Exchange **nor** AD
+
+Be direct with the client: **any** browser-based feature that reads a user's
+mailbox needs *some* one-time cooperation from whoever owns the Exchange/AD
+environment — there is no way around it. (A server-side middle tier using EWS
+**Impersonation** would instead need the `ApplicationImpersonation` RBAC role
+granted **on Exchange** — a *larger* ask than the AD delegation above.) Classic
+KCD is the **least-invasive** request you can make: it touches only an account you
+introduce, never their Exchange server.
+
 ---
 
 ## Goal & topology

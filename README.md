@@ -132,7 +132,9 @@ fragility, host EWS on the **same origin** as SharePoint via an IIS reverse prox
 with **Kerberos Constrained Delegation**, then set the **EWS endpoint URL** to the
 proxy path (e.g. `https://intranet.contoso.com/ews/Exchange.asmx`).
 
-➡️ Full admin runbook: [docs/exchange-proxy.md](docs/exchange-proxy.md)
+➡️ **New to this?** Plain-English walkthrough (who does what):
+[docs/setup-simple.md](docs/setup-simple.md)
+➡️ **Full admin runbook:** [docs/exchange-proxy.md](docs/exchange-proxy.md)
 (ARR + URL Rewrite, the `/ews` IIS application, Windows auth, SPNs and KCD
 delegation, verification, and an ADFS/WAP alternative).
 

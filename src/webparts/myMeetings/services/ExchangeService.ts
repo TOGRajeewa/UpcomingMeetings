@@ -40,6 +40,7 @@ export class ExchangeService implements IExchangeService {
     // Typed as `any`: the TS 2.4 lib.dom RequestInit predates `signal`.
     const init: any = {
       method: 'POST',
+      mode: 'same-origin',
       // The browser negotiates ADFS / Integrated Windows Auth on our behalf.
       credentials: 'include',
       headers: {
